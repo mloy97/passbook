@@ -1,0 +1,16 @@
+{
+	"errors": [],
+	"accounts": [
+		{
+			"org": { "domain": "example-bank.test", "sfin-url": "https://sfin.example.test/simplefin", "name": "First Example Bank" },
+			"id": "ACT-CHK",
+			"name": "Everyday Checking",
+			"currency": "USD",
+			"balance": "100.00",
+			"balance-date": 1791460800,
+			"transactions": [
+				{ "id": "TRN-1", "posted": 1791201600, "amount": "-1.00", "description": "FEE" }
+			]
+		}
+	]
+}

@@ -1,0 +1,34 @@
+{
+	"errlist": [],
+	"connections": [
+		{ "conn_id": "CON-1", "name": "First Example Bank", "org_id": "ORG-1", "org_url": "example-bank.test", "sfin_url": "https://sfin.example.test/simplefin" },
+		{ "conn_id": "CON-2", "name": "Example Card Co", "org_id": "ORG-2", "sfin_url": "https://sfin.example.test/simplefin" }
+	],
+	"accounts": [
+		{
+			"id": "ACT-CHK",
+			"name": "Everyday Checking",
+			"conn_id": "CON-1",
+			"currency": "USD",
+			"balance": "1523.07",
+			"available-balance": "1473.07",
+			"balance-date": 1791460800,
+			"transactions": [
+				{ "id": "TRN-1", "posted": 1791201600, "amount": "-42.50", "description": "GROCERY MART #12", "transacted_at": 1791115200 },
+				{ "id": "TRN-2", "posted": 1791288000, "amount": "2100.00", "description": "PAYROLL DEPOSIT" },
+				{ "id": "TRN-P1", "posted": 0, "amount": "-50.00", "description": "COFFEE ROASTERS", "pending": true, "transacted_at": 1791446400 }
+			]
+		},
+		{
+			"id": "ACT-CARD",
+			"name": "Rewards Card",
+			"conn_id": "CON-2",
+			"currency": "USD",
+			"balance": "-312.99",
+			"balance-date": 1791460800,
+			"transactions": [
+				{ "id": "TRN-1", "posted": 1791374400, "amount": "-312.99", "description": "AIRLINE TICKETS" }
+			]
+		}
+	]
+}

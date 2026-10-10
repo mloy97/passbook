@@ -1,0 +1,19 @@
+{
+	"errlist": [
+		{ "code": "con.auth", "msg": "First Example Bank needs you to sign in again.", "conn_id": "CON-1" },
+		{ "code": "act.missingdata", "msg": "Some transactions for Rewards Card could not be retrieved.", "account_id": "ACT-CARD" }
+	],
+	"errors": ["First Example Bank needs you to sign in again."],
+	"connections": [
+		{ "conn_id": "CON-1", "name": "First Example Bank", "org_id": "ORG-1", "sfin_url": "https://sfin.example.test/simplefin" },
+		{ "conn_id": "CON-2", "name": "Example Card Co", "org_id": "ORG-2", "sfin_url": "https://sfin.example.test/simplefin" },
+		{ "conn_id": "CON-3", "name": "Third Credit Union", "org_id": "ORG-3", "sfin_url": "https://sfin.example.test/simplefin" }
+	],
+	"accounts": [
+		{ "id": "ACT-CHK", "name": "Everyday Checking", "conn_id": "CON-1", "currency": "USD", "balance": "1523.07", "balance-date": 1791460800, "transactions": [] },
+		{ "id": "ACT-CARD", "name": "Rewards Card", "conn_id": "CON-2", "currency": "USD", "balance": "-312.99", "balance-date": 1791460800, "transactions": [] },
+		{ "id": "ACT-SAV", "name": "Savings", "conn_id": "CON-3", "currency": "USD", "balance": "10000.00", "balance-date": 1791460800, "transactions": [
+			{ "id": "TRN-9", "posted": 1791374400, "amount": "1.25", "description": "INTEREST" }
+		] }
+	]
+}

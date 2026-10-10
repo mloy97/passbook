@@ -1,0 +1,5 @@
+# Keep shell scripts LF so they run in Git Bash on Windows checkouts
+*.sh text eol=lf
+
+# Golden files compared byte for byte
+tests/fixtures/export/*.csv -text

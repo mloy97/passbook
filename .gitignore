@@ -1,0 +1,41 @@
+# Secrets: never commit. Keep a .env.example with blank values instead.
+# (Real credentials don't belong in a repo .env at all: this folder syncs to Nextcloud.)
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+credentials*.json
+
+# npm
+node_modules/
+npm-debug.log*
+.npm/
+.eslintcache
+*.tsbuildinfo
+
+# Build output and caches
+dist/
+build/
+coverage/
+.cache/
+
+# Obsidian plugin build output (shipped via GitHub releases, not committed)
+main.js
+main.js.map
+# Plugin runtime state, if a test vault writes it here
+data.json
+
+# wdio-obsidian-service: downloaded Obsidian builds and test artifacts
+.obsidian-cache/
+.wdio-vaults/
+screenshots/
+
+# Editor and OS
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+desktop.ini

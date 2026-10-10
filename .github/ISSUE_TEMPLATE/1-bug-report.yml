@@ -1,0 +1,33 @@
+name: Bug report
+description: Something in PassBook doesn't work the way you expected.
+title: "Bug: "
+labels: [bug, user-report]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time. Please **don't** include account numbers, amounts, transaction details or your setup token. Describe what happened in general terms instead.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      placeholder: "I ran PassBook: Sync now and…"
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect to happen?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to make it happen again
+      description: If you can. "It happens every time I…" is useful too.
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: Diagnostic summary
+      description: Filled in by PassBook when you use **Settings → PassBook → Report a problem**. It has versions, settings and counts, never names or amounts. Edit or remove anything you'd rather not share.
+      render: text

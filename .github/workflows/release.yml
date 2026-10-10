@@ -1,0 +1,70 @@
+# Builds a PassBook release when a version tag (x.y.z, no "v") is pushed:
+# lint, test, build, attest build provenance, and open a DRAFT GitHub release with
+# main.js, manifest.json and styles.css. A person reviews and publishes the draft.
+#
+# Run it by hand (Actions -> Release -> Run workflow) for a dry run: everything except
+# the attestation and the release, with the files uploaded as a workflow artifact.
+
+name: Release
+
+on:
+  push:
+    tags: ['[0-9]+.[0-9]+.[0-9]+']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  id-token: write
+  attestations: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Check versions and changelog match the tag
+        if: github.ref_type == 'tag'
+        run: node scripts/release.mjs check "$GITHUB_REF_NAME"
+
+      - run: npm run lint
+      - run: npm test
+      - run: npm run build
+
+      - name: Attest build provenance
+        if: github.ref_type == 'tag'
+        uses: actions/attest-build-provenance@v3
+        with:
+          subject-path: |
+            main.js
+            manifest.json
+            styles.css
+
+      - name: Create draft release
+        if: github.ref_type == 'tag'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          node scripts/release.mjs notes "$GITHUB_REF_NAME" > release-notes.md
+          gh release create "$GITHUB_REF_NAME" \
+            --draft \
+            --title "$GITHUB_REF_NAME" \
+            --notes-file release-notes.md \
+            main.js manifest.json styles.css
+
+      - name: Upload build (dry run)
+        if: github.ref_type != 'tag'
+        uses: actions/upload-artifact@v4
+        with:
+          name: passbook-dry-run
+          path: |
+            main.js
+            manifest.json
+            styles.css

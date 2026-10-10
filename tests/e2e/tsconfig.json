@@ -1,0 +1,11 @@
+{
+	"extends": "../../tsconfig.json",
+	"compilerOptions": {
+		"module": "ESNext",
+		"moduleResolution": "bundler",
+		"target": "ES2022",
+		"types": ["node", "mocha", "@wdio/globals/types", "wdio-obsidian-service"]
+	},
+	"include": ["**/*.ts", "../../wdio.conf.mts"],
+	"exclude": []
+}

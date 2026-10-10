@@ -1,0 +1,7 @@
+/* PassBook styles. Shipped as a release asset next to main.js. */
+
+.passbook-settings .passbook-error {
+	color: var(--text-error);
+	font-size: var(--font-ui-small);
+	padding: var(--size-4-2) 0;
+}

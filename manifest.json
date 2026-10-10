@@ -1,0 +1,10 @@
+{
+	"id": "passbook",
+	"name": "PassBook",
+	"version": "0.1.0",
+	"minAppVersion": "1.11.5",
+	"description": "Pull your bank and credit card accounts, balances and transactions into your vault in a stable, documented format.",
+	"author": "mloy97",
+	"authorUrl": "https://github.com/mloy97",
+	"isDesktopOnly": false
+}

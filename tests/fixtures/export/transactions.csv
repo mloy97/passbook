@@ -1,0 +1,6 @@
+date,account,institution,description,amount,currency,status,posted_at,transacted_at,first_seen_at,updated_at,account_id,transaction_id
+2026-10-01,"Checking, joint","Bank ""One""",GROCERY MART #12,-42.50,USD,posted,2026-10-01T12:00:00.000Z,,2026-10-02T00:00:00.000Z,2026-10-02T00:00:00.000Z,simplefin:C1:A1,simplefin:C1:A1:1
+2026-10-01,"Checking, joint","Bank ""One""","Line one
+line two, with ""quotes""",100.00,USD,posted,2026-10-01T12:00:00.000Z,2026-09-30T08:00:00.000Z,2026-10-02T00:00:00.000Z,2026-10-02T00:00:00.000Z,simplefin:C1:A1,simplefin:C1:A1:2
+2026-10-01,"Checking, joint","Bank ""One""","'=HYPERLINK(""http://evil.test"")",-42.50,USD,pending,,,2026-10-02T00:00:00.000Z,2026-10-02T00:00:00.000Z,simplefin:C1:A1,simplefin:C1:A1:3
+2026-10-01,,,'@SUM(A1),-42.50,USD,posted,2026-10-01T12:00:00.000Z,,2026-10-02T00:00:00.000Z,2026-10-02T00:00:00.000Z,gone,simplefin:C1:A1:4

@@ -1,0 +1,24 @@
+name: Feature request
+description: An idea for something PassBook could do.
+title: "Idea: "
+labels: [feature, user-report]
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would you like PassBook to do?
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: What would it help you with?
+      description: The problem behind the idea helps more than the exact solution.
+    validations:
+      required: true
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: Diagnostic summary
+      description: Filled in by PassBook when you use **Settings → PassBook → Suggest a feature**. Edit or remove anything you'd rather not share.
+      render: text
