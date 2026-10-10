@@ -94,7 +94,8 @@ Demo mode makes no network requests at all.
 **Feedback buttons.** **Report a problem** and **Suggest a feature** in PassBook's settings
 open a pre-filled form on GitHub in your browser. PassBook itself sends nothing. You see
 the form, including the optional diagnostic summary (versions, settings and counts, never
-names or amounts), and nothing reaches GitHub unless you submit it.
+names or amounts), and nothing reaches GitHub unless you submit it. **Support on Ko-fi**
+opens the developer's Ko-fi page in your browser.
 
 ## Accounts and payment
 
@@ -119,6 +120,11 @@ free, and demo mode needs no account.
 The full picture, including what could go wrong, is in
 [docs/threat-model.md](docs/threat-model.md). To report a security problem, see
 [SECURITY.md](SECURITY.md).
+
+## Support
+
+PassBook is free and open source. If it's useful to you, you can
+[buy the developer a coffee on Ko-fi](https://ko-fi.com/devmilo).
 
 ## Status
 

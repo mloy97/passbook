@@ -29,3 +29,5 @@ contract, so breaking either means a major version.
 - **Feedback** in settings: report a problem or suggest a feature through a pre-filled
   GitHub form, with an optional diagnostic summary (no personal details). Also
   **PassBook: Copy diagnostic summary**.
+- Donation link (Ko-fi) in the manifest, so Obsidian shows a Donate button, and in
+  settings.

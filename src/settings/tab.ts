@@ -115,6 +115,15 @@ export class PassBookSettingTab extends PluginSettingTab {
 			.setName('Include diagnostic summary')
 			.setDesc('Adds PassBook and Obsidian versions, your PassBook settings, and how many accounts and transactions you have. Never names, descriptions or amounts. You can read and edit it on GitHub before submitting.')
 			.addToggle((t) => t.setValue(this.includeDiagnostics).onChange((on) => (this.includeDiagnostics = on)));
+
+		// fundingUrl is a documented manifest field, but missing from PluginManifest's types.
+		const funding = fundingUrl((this.plugin.manifest as { fundingUrl?: string | Record<string, string> }).fundingUrl);
+		if (funding) {
+			new Setting(el)
+				.setName('Support PassBook')
+				.setDesc('PassBook is free. If it saves you time, you can buy the developer a coffee on Ko-fi.')
+				.addButton((b) => b.setButtonText('Support on Ko-fi').onClick(() => window.open(funding)));
+		}
 	}
 
 	private renderDataFolder(el: HTMLElement, demo: boolean): void {
@@ -243,4 +252,11 @@ export function layoutDescription(layout: Layout, folder: string): string {
 	const d = dirs(layout);
 	const where = (sub: string) => (sub ? `${folder}/${sub.slice(0, -1)}` : folder);
 	return `JSON goes in ${where(d.json)}, CSV (if on) in ${where(d.csv)}. Changing this moves PassBook’s files; nothing else in the folder is touched.`;
+}
+
+/** The manifest's donation link: a URL, or the first of several labelled ones. */
+export function fundingUrl(value: string | Record<string, string> | undefined): string | undefined {
+	if (typeof value === 'string') return value || undefined;
+	if (value) return Object.values(value)[0];
+	return undefined;
 }

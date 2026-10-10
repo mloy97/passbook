@@ -40,7 +40,7 @@ export default defineConfig(
 	...obsidianmd.configs.recommended,
 	{
 		rules: {
-			'obsidianmd/ui/sentence-case': ['warn', { brands: ['PassBook', 'SimpleFIN', 'SimpleFIN Bridge', 'Plaid', 'Obsidian', 'GitHub'] }],
+			'obsidianmd/ui/sentence-case': ['warn', { brands: ['PassBook', 'SimpleFIN', 'SimpleFIN Bridge', 'Plaid', 'Obsidian', 'GitHub', 'Ko-fi'] }],
 		},
 	},
 	{

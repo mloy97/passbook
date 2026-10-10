@@ -350,6 +350,10 @@ ${a.stack ?? ''}` : String(a))).join(' '));
 		const third = await browser.execute(() => (window as unknown as { opened: string[] }).opened[2]);
 		expect(new URL(third ?? '').searchParams.has('diagnostics')).toBe(false);
 
+		await tab().$('button=Support on Ko-fi').click();
+		await browser.waitUntil(async () => (await browser.execute(() => (window as unknown as { opened: string[] }).opened.length)) === 4);
+		expect(await browser.execute(() => (window as unknown as { opened: string[] }).opened[3])).toBe('https://ko-fi.com/devmilo');
+
 		await browser.executeObsidianCommand('passbook:copy-diagnostics');
 		await browser.waitUntil(async () => (await browser.execute(() => (window as unknown as { copied: string[] }).copied.length)) === 1);
 		const copied = await browser.execute(() => (window as unknown as { copied: string[] }).copied[0]);
