@@ -47,4 +47,25 @@ describe('policy', () => {
 		expect(readme).toMatch(/paid/i);
 		expect(readme).toMatch(/no telemetry/i);
 	});
+	it('keeps the manifest within Obsidian’s submission requirements', () => {
+		const manifest = JSON.parse(readFileSync(join(root, 'manifest.json'), 'utf8')) as Record<string, unknown>;
+		const description = String(manifest.description);
+		expect(String(manifest.id)).toMatch(/^[a-z0-9-]+$/);
+		expect(String(manifest.id)).not.toMatch(/obsidian/i);
+		expect(String(manifest.name)).not.toMatch(/obsidian/i);
+		expect(description.length).toBeLessThanOrEqual(250);
+		expect(description).toMatch(/\.$/);
+		expect(description).not.toMatch(/^this (is a )?plugin/i);
+		expect(description).not.toMatch(/\p{Extended_Pictographic}/u);
+		expect(manifest.version).toMatch(/^\d+\.\d+\.\d+$/);
+		expect(manifest.isDesktopOnly).toBe(false);
+		const funding = manifest.fundingUrl;
+		const urls = typeof funding === 'string' ? [funding] : funding && typeof funding === 'object' ? Object.values(funding as Record<string, string>) : [];
+		for (const url of urls) expect(url).toMatch(/^https:\/\//);
+	});
+
+	it('uses no Node or Electron modules, so it can run on mobile', () => {
+		const offenders = sources.filter((f) => /from ['"](node:|fs|path|os|crypto|child_process|electron)['"]|require\(['"](fs|path|os|crypto|child_process|electron)['"]\)/.test(f.text)).map((f) => f.path);
+		expect(offenders).toEqual([]);
+	});
 });

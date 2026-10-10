@@ -51,7 +51,7 @@ storage on this device, and checks it works. You should see this:
 
 Open the command palette and run **PassBook: Sync now**.
 
-![The command palette showing PassBook's four commands](images/6-command-palette.png)
+![The command palette showing PassBook's commands](images/6-command-palette.png)
 
 The first sync fetches the last 90 days. A notice tells you how many accounts and new
 transactions it found, along with any problem, such as a bank that needs you to sign in

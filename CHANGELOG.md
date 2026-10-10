@@ -7,6 +7,10 @@ contract, so breaking either means a major version.
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-10-11
+
+First release.
+
 ### Added
 
 - SimpleFIN Bridge connection: paste a setup token in **Settings → PassBook**.

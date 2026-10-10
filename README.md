@@ -1,38 +1,32 @@
 # PassBook
 
-An Obsidian plugin that pulls your bank and credit card data (accounts, balances,
-transactions) into your vault reliably, in a stable, documented format. It's a data
-layer: use the commands, or build your own notes, templates, digests and graphs on its
-API. No server: the plugin talks directly to your data provider from your machine.
+Bring your bank and credit card accounts, balances and transactions into your Obsidian
+vault, kept up to date in a stable, documented format. PassBook is a data layer: sync
+with one command, then build your own notes, daily summaries, dashboards and scripts on
+top. No server and no telemetry; it talks directly to your data provider from your
+device.
 
-Planned data providers:
+## What it does
 
-- **[SimpleFIN Bridge](https://beta-bridge.simplefin.org/)** (first): a consumer service,
-  about $15/year. Link your banks on their site and paste one token into the plugin.
-- **Plaid** (optional, later): requires your own free Plaid developer account. Adds
-  credit card statement balances, minimum payments and due dates.
+- **Syncs your accounts** through [SimpleFIN Bridge](https://bridge.simplefin.org/): link
+  your banks there once, paste one setup token into PassBook, and run **Sync now**.
+- **Keeps your history correct:** charges that post late are picked up, and pending
+  charges are replaced when they post, never duplicated.
+- **Stores plain files in your vault:** JSON by default, with optional CSV copies for
+  spreadsheets, in the folder layout you choose.
+- **Gives scripts and plugins an API** (`api.v1`) with a sync-completed event and
+  published TypeScript types.
+- **Lets you try everything with made-up data** in demo mode, no account needed.
 
-**New here?** Follow [docs/getting-started.md](docs/getting-started.md): signing up for
-SimpleFIN Bridge, linking banks, and your first sync, with screenshots.
+## Getting started
+
+1. Install PassBook from **Settings → Community plugins → Browse** and enable it.
+2. Follow [docs/getting-started.md](docs/getting-started.md): signing up for SimpleFIN
+   Bridge, linking banks, and your first sync, with screenshots.
 
 **Try it without an account:** in **Settings → PassBook**, set **Data source** to
 **Demo**. PassBook then syncs made-up accounts and transactions into a separate
 `PassBook (demo)` folder, with no network use at all.
-
-## Building from source
-
-Requires Node.js 20 or later.
-
-```sh
-npm install
-npm run build   # type-check and bundle main.js
-npm test        # unit tests (vitest)
-npm run lint
-```
-
-To try it, copy `main.js`, `manifest.json` and `styles.css` into
-`<your vault>/.obsidian/plugins/passbook/`, reload Obsidian and enable PassBook under
-**Settings → Community plugins**. `npm run dev` rebuilds on every change.
 
 ## Using the data
 
@@ -127,10 +121,15 @@ The full picture, including what could go wrong, is in
 PassBook is free and open source. If it's useful to you, you can
 [buy the developer a coffee on Ko-fi](https://ko-fi.com/devmilo).
 
-## Status
+## Feedback
 
-Beta, not yet released. Follow progress on the [issue tracker](../../issues) and
-[milestones](../../milestones).
+Found a problem or have an idea? Use **Report a problem** or **Suggest a feature** at the
+bottom of **Settings → PassBook**, or [open an issue](../../issues/new/choose).
+
+## Contributing
+
+Building from source, running the tests and the project's ground rules are in
+[CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 
