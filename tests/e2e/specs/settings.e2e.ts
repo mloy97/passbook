@@ -99,6 +99,19 @@ describe('PassBook settings', function () {
 		expect(enabled).toBe(true);
 	});
 
+	it('shows the support card first, with the bundled Ko-fi cup', async function () {
+		await openSettings();
+		const first = await browser.execute(() => document.querySelector('.passbook-settings')?.firstElementChild?.className ?? '');
+		expect(first).toBe('passbook-support');
+		await expect(browser.$('.passbook-support svg path')).toExist();
+		await expect(browser.$('.passbook-kofi-button')).toHaveText('Buy me a coffee');
+		await shot('0-support-card');
+		// Light mode too: the card mixes Ko-fi's fixed color with theme colors.
+		await browser.executeObsidian(({ app }) => (app as unknown as { changeTheme(t: string): void }).changeTheme('moonstone'));
+		await shot('0-support-card-light');
+		await browser.executeObsidian(({ app }) => (app as unknown as { changeTheme(t: string): void }).changeTheme('obsidian'));
+	});
+
 	it('shows the setup token form when not connected', async function () {
 		await openSettings();
 		await expect(tab().$('input[type=password]')).toBeDisplayed();
@@ -350,7 +363,10 @@ ${a.stack ?? ''}` : String(a))).join(' '));
 		const third = await browser.execute(() => (window as unknown as { opened: string[] }).opened[2]);
 		expect(new URL(third ?? '').searchParams.has('diagnostics')).toBe(false);
 
-		await tab().$('button=Support on Ko-fi').click();
+		// The card is at the top; on phone width it can sit under the sticky header.
+		await tab().$('.passbook-kofi-button').scrollIntoView({ block: 'center' });
+		await browser.pause(400);
+		await tab().$('.passbook-kofi-button').click();
 		await browser.waitUntil(async () => (await browser.execute(() => (window as unknown as { opened: string[] }).opened.length)) === 4);
 		expect(await browser.execute(() => (window as unknown as { opened: string[] }).opened[3])).toBe('https://ko-fi.com/devmilo');
 

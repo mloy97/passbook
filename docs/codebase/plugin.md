@@ -43,6 +43,10 @@ notices; `api.v1.sync()` wraps it with nothing.
 - **This device syncs** is shown when connected.
 - **Data folder** is a text setting.
 
+**Support card.** `renderSupport()` puts a Ko-fi card first in the tab while the manifest
+has a `fundingUrl`. The cup is an inline SVG path (no request); colors are in
+`styles.css`.
+
 **Feedback** (`src/feedback/feedback.ts`, settings section and `commands.ts`).
 - `PassBookPlugin.diagnostics()` collects versions, settings and counts, plus the last
   sync error, which `runSync()` remembers until the next success.

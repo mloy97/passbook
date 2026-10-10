@@ -5,3 +5,53 @@
 	font-size: var(--font-ui-small);
 	padding: var(--size-4-2) 0;
 }
+
+/* Support card at the top of settings. Ko-fi brand color: #FF6433. */
+.passbook-settings .passbook-support {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: var(--size-4-3);
+	padding: var(--size-4-3) var(--size-4-4);
+	margin-bottom: var(--size-4-4);
+	border: 1px solid var(--background-modifier-border);
+	border-left: 4px solid #ff6433;
+	border-radius: var(--radius-m);
+	background-color: var(--background-secondary);
+}
+
+.passbook-settings .passbook-support-icon {
+	flex: none;
+	width: 32px;
+	height: 32px;
+	fill: #ff6433;
+}
+
+.passbook-settings .passbook-support-text {
+	flex: 1 1 200px;
+	min-width: 0;
+}
+
+.passbook-settings .passbook-support-title {
+	font-weight: var(--font-semibold);
+	color: var(--text-normal);
+}
+
+.passbook-settings .passbook-support-desc {
+	font-size: var(--font-ui-small);
+	color: var(--text-muted);
+}
+
+.passbook-settings .passbook-kofi-button {
+	flex: none;
+	background-color: #ff6433;
+	color: #fff;
+	font-weight: var(--font-semibold);
+	border: none;
+	box-shadow: none;
+	cursor: pointer;
+}
+
+.passbook-settings .passbook-kofi-button:hover {
+	background-color: #e8552a;
+}

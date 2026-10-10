@@ -94,8 +94,9 @@ Demo mode makes no network requests at all.
 **Feedback buttons.** **Report a problem** and **Suggest a feature** in PassBook's settings
 open a pre-filled form on GitHub in your browser. PassBook itself sends nothing. You see
 the form, including the optional diagnostic summary (versions, settings and counts, never
-names or amounts), and nothing reaches GitHub unless you submit it. **Support on Ko-fi**
-opens the developer's Ko-fi page in your browser.
+names or amounts), and nothing reaches GitHub unless you submit it. **Buy me a coffee**,
+at the top of PassBook's settings, opens the developer's Ko-fi page in your browser; the
+Ko-fi logo is bundled with PassBook, so showing it makes no request.
 
 ## Accounts and payment
 
