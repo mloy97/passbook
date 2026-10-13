@@ -142,6 +142,33 @@ describe('PassBook settings', function () {
 		await shot('3-connected');
 	});
 
+	it('syncs from the Sync now button in settings', async function () {
+		await fakeSimpleFin('ok');
+		const button = tab().$('button=Sync now');
+		await button.scrollIntoView({ block: 'center' });
+		await button.waitForClickable();
+		await browser.pause(400);
+		await button.click();
+		await browser.waitUntil(async () => (await noticeText()).includes('PassBook synced'), { timeoutMsg: 'no sync notice from the settings button' });
+		await expect(tab().$('.setting-item*=Last synced')).toHaveText(expect.stringContaining('Just now'));
+		await shot('3c-sync-section');
+	});
+
+	it('syncs from the ribbon icon, whose tooltip says when', async function () {
+		await closeSettings();
+		const ribbon = browser.$('.side-dock-ribbon-action[aria-label^="PassBook: sync now"]');
+		if (await ribbon.isDisplayed()) {
+			await expect(ribbon).toHaveAttr('aria-label', expect.stringContaining('last synced'));
+			await ribbon.click();
+		} else {
+			// Phone width hides the ribbon in a menu; run its handler the same way.
+			await browser.executeObsidianCommand('passbook:sync-now');
+		}
+		await browser.waitUntil(async () => (await noticeText()).split('PassBook synced').length > 2, { timeoutMsg: 'no second sync notice' });
+		await shot('3d-ribbon');
+		await openSettings();
+	});
+
 	it('has a This device syncs toggle, on by default, kept per device', async function () {
 		const toggle = tab().$('.setting-item*=This device syncs').$('.checkbox-container');
 		await expect(toggle).toHaveElementClass('is-enabled');
@@ -189,18 +216,20 @@ ${a.stack ?? ''}` : String(a))).join(' '));
 				const list = await a.list('PassBook/json/transactions');
 				return {
 					accounts: await a.exists('PassBook/json/accounts.json'),
-					sync: JSON.parse(await a.read('PassBook/json/sync.json')) as { lastSync: { newTransactionIds: string[] } },
+					sync: JSON.parse(await a.read('PassBook/json/sync.json')) as { lastSync: { at: string; newTransactionIds: string[] } },
 					months: list.files,
 				};
 			});
 		const first = await read();
 		expect(first.accounts).toBe(true);
 		expect(first.months).toEqual(['PassBook/json/transactions/2026-10.json']);
-		expect(first.sync.lastSync.newTransactionIds).toHaveLength(1);
+		// Earlier steps (settings button, ribbon, command) already synced, so nothing is new.
+		expect(first.sync.lastSync.newTransactionIds).toEqual([]);
 
+		await browser.pause(1100); // so the next sync's timestamp differs
 		await browser.executeObsidianCommand('passbook:sync-now');
-		await browser.waitUntil(async () => (await read()).sync.lastSync.newTransactionIds.length === 0, {
-			timeoutMsg: 'second sync did not rewrite sync.json',
+		await browser.waitUntil(async () => (await read()).sync.lastSync.at !== first.sync.lastSync.at, {
+			timeoutMsg: 'the next sync did not rewrite sync.json',
 		});
 		const second = await read();
 		expect(second.months).toEqual(['PassBook/json/transactions/2026-10.json']);

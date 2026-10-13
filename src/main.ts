@@ -10,7 +10,8 @@ import { SimpleFinProvider } from './providers/simplefin';
 import { Http, Provider, ProviderId } from './providers/types';
 import { DemoProvider } from './providers/demo';
 import { ConnectionController, LocalStore, message } from './settings/connection';
-import { PassBookSettingTab } from './settings/tab';
+import { PassBookSettingTab, relativeTime } from './settings/tab';
+import { shouldSyncOnStartup, STARTUP_SYNC_CHOICES } from './sync/startup';
 import { describeSummary, StateStore, SyncSummary, syncNow } from './sync/sync-now';
 import { registerCommands } from './commands';
 import { DiagnosticInfo } from './feedback/feedback';
@@ -27,6 +28,8 @@ export interface PluginData {
 	layout: Layout;
 	/** Also write a CSV mirror of the JSON. */
 	csv: boolean;
+	/** Sync when Obsidian starts if the last sync is older than this many hours; 0 is off. */
+	syncOnStartupHours: number;
 	providerState?: Partial<Record<ProviderId, unknown>>;
 }
 
@@ -36,7 +39,8 @@ export default class PassBookPlugin extends Plugin {
 	 * inside Obsidian, so it's read on each call rather than captured.
 	 */
 	http: Http = obsidianHttp;
-	settings: PluginData = { dataFolder: DEFAULT_DATA_FOLDER, provider: 'simplefin', layout: DEFAULT_LAYOUT, csv: false };
+	settings: PluginData = { dataFolder: DEFAULT_DATA_FOLDER, provider: 'simplefin', layout: DEFAULT_LAYOUT, csv: false, syncOnStartupHours: 0 };
+	private ribbonEl?: HTMLElement;
 	simplefin!: SimpleFinProvider;
 	readonly demo = new DemoProvider();
 	simplefinConnection!: ConnectionController;
@@ -67,7 +71,12 @@ export default class PassBookPlugin extends Plugin {
 		this.addSettingTab(new PassBookSettingTab(this.app, this));
 		this.addCommand({ id: 'sync-now', name: 'Sync now', callback: () => void this.syncNow() });
 		registerCommands(this);
-		this.app.workspace.onLayoutReady(() => void this.removeProvisionalCache());
+		this.ribbonEl = this.addRibbonIcon('refresh-cw', 'PassBook: sync now', () => void this.syncNow());
+		this.app.workspace.onLayoutReady(() => {
+			void this.removeProvisionalCache();
+			void this.refreshRibbon();
+			void this.maybeSyncOnStartup();
+		});
 	}
 
 	/** The folder the active data source reads and writes. Demo data never mixes with real data. */
@@ -210,6 +219,44 @@ export default class PassBookPlugin extends Plugin {
 		return info;
 	}
 
+	/** Whether this device can sync right now: connected (or demo) and allowed to write. */
+	canSync(): boolean {
+		return this.activeProvider().isConnected() && this.canWrite();
+	}
+
+	/** When the last sync finished, or null if never (or the data folder can't be read). */
+	async lastSyncAt(): Promise<string | null> {
+		try {
+			return (await this.ledger.load()).lastSync?.at ?? null;
+		} catch {
+			return null;
+		}
+	}
+
+	/** Runs once when Obsidian starts, if the setting is on and a sync is due. */
+	async maybeSyncOnStartup(now = new Date()): Promise<void> {
+		const due = shouldSyncOnStartup({
+			hours: this.settings.syncOnStartupHours,
+			lastSyncAt: await this.lastSyncAt(),
+			canSync: this.canSync(),
+			now,
+		});
+		if (due) await this.syncNow();
+	}
+
+	async setSyncOnStartupHours(hours: number): Promise<void> {
+		this.settings.syncOnStartupHours = hours;
+		await this.saveData(this.settings);
+	}
+
+	/** The ribbon tooltip says when the last sync was. */
+	async refreshRibbon(): Promise<void> {
+		if (!this.ribbonEl) return;
+		const last = await this.lastSyncAt();
+		const when = last ? `last synced ${relativeTime(new Date(last), new Date())}` : 'not synced yet';
+		this.ribbonEl.setAttribute('aria-label', `PassBook: sync now (${when})`);
+	}
+
 	/** Tells listeners and the workspace (`passbook:sync-completed`) a sync finished. */
 	private announce(result: SyncResult): void {
 		for (const listener of this.syncListeners) {
@@ -220,6 +267,7 @@ export default class PassBookPlugin extends Plugin {
 			}
 		}
 		this.app.workspace.trigger('passbook:sync-completed', result);
+		void this.refreshRibbon();
 	}
 
 	private async loadSettings(): Promise<PluginData> {
@@ -231,6 +279,7 @@ export default class PassBookPlugin extends Plugin {
 			provider: saved.provider === 'demo' ? 'demo' : 'simplefin',
 			layout: isLayout(saved.layout) ? saved.layout : DEFAULT_LAYOUT,
 			csv: saved.csv === true,
+			syncOnStartupHours: (STARTUP_SYNC_CHOICES as readonly number[]).includes(Number(saved.syncOnStartupHours)) ? Number(saved.syncOnStartupHours) : 0,
 		};
 	}
 

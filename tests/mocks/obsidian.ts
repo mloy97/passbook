@@ -21,6 +21,12 @@ export class Plugin {
 	addSettingTab(tab: unknown): void {
 		this.settingTabs.push(tab);
 	}
+	ribbons: { icon: string; title: string; onClick: () => unknown; attrs: Record<string, string> }[] = [];
+	addRibbonIcon(icon: string, title: string, onClick: () => unknown): { setAttribute(k: string, v: string): void } {
+		const ribbon = { icon, title, onClick, attrs: {} as Record<string, string> };
+		this.ribbons.push(ribbon);
+		return { setAttribute: (k: string, v: string) => void (ribbon.attrs[k] = v) };
+	}
 	addCommand(command: { id: string; name: string; callback?: () => unknown }): unknown {
 		this.commands.push(command);
 		return command;

@@ -2,6 +2,7 @@ import { App, ButtonComponent, Notice, PluginSettingTab, Setting } from 'obsidia
 import type PassBookPlugin from '../main';
 import { DEFAULT_DATA_FOLDER } from '../ledger/defaults';
 import { DEFAULT_LAYOUT, dirs, isLayout, Layout } from '../ledger/layout';
+import { STARTUP_SYNC_CHOICES } from '../sync/startup';
 import { openFeedback } from '../commands';
 import { UserFacingError } from '../errors';
 import { ConnectionController, ConnectionState, message } from './connection';
@@ -97,11 +98,43 @@ export class PassBookSettingTab extends PluginSettingTab {
 			}
 		}
 
+		new Setting(containerEl).setName('Sync').setHeading();
+		this.renderSync(containerEl);
+
 		new Setting(containerEl).setName('Data').setHeading();
 		this.renderDataFolder(containerEl, demo);
 
 		new Setting(containerEl).setName('Feedback').setHeading();
 		this.renderFeedback(containerEl);
+	}
+
+	private renderSync(el: HTMLElement): void {
+		if (this.plugin.canSync()) {
+			const row = new Setting(el)
+				.setName('Last synced')
+				.setDesc('Checking…')
+				.addButton((b) =>
+					b
+						.setButtonText('Sync now')
+						.setCta()
+						.onClick(async () => {
+							b.setDisabled(true).setButtonText('Syncing…');
+							await this.plugin.syncNow();
+							this.rerender();
+						}),
+				);
+			void this.plugin.lastSyncAt().then((last) => {
+				const when = last ? relativeTime(new Date(last), new Date()) : '';
+				row.setDesc(last ? `${when.charAt(0).toUpperCase()}${when.slice(1)}.` : 'Never. Select Sync now to fetch your accounts.');
+			});
+		}
+		new Setting(el)
+			.setName('Sync when Obsidian starts')
+			.setDesc('On the device that syncs, sync automatically when you open Obsidian if the last sync is older than this.')
+			.addDropdown((d) => {
+				for (const hours of STARTUP_SYNC_CHOICES) d.addOption(String(hours), hours === 0 ? 'Off' : `If older than ${hours} hour${hours === 1 ? '' : 's'}`);
+				d.setValue(String(this.plugin.settings.syncOnStartupHours)).onChange((v) => void this.plugin.setSyncOnStartupHours(Number(v)));
+			});
 	}
 
 	/** Whether to attach the diagnostic summary. Per visit; on by default. */

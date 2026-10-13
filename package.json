@@ -1,6 +1,6 @@
 {
 	"name": "passbook",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "Obsidian plugin: bank and credit card data in your vault, in a stable, documented format",
 	"main": "main.js",
 	"type": "module",

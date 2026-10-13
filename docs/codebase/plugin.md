@@ -43,6 +43,12 @@ notices; `api.v1.sync()` wraps it with nothing.
 - **This device syncs** is shown when connected.
 - **Data folder** is a text setting.
 
+**Ways to sync.** The command, the ribbon icon (`addRibbonIcon`, whose `aria-label`
+`refreshRibbon()` updates after each sync), the settings **Sync now** button and
+`api.v1.sync()` all call `runSync()`. On layout ready, `maybeSyncOnStartup()` asks
+`shouldSyncOnStartup()` (`src/sync/startup.ts`), which is pure and unit-tested, whether
+a sync is due: setting on, last sync older than the chosen hours, and `canSync()`.
+
 **Support card.** `renderSupport()` puts a Ko-fi card first in the tab while the manifest
 has a `fundingUrl`. The cup is an inline SVG path (no request); colors are in
 `styles.css`.

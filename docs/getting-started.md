@@ -59,7 +59,10 @@ again in SimpleFIN Bridge.
 
 ![A notice reading "PassBook synced 1 account, 1 new transaction."](images/5-sync-notice.png)
 
-Sync whenever you like; each sync picks up what's new. Some banks don't report pending
+After that, sync with the **sync icon in the left ribbon**, **Sync now** in PassBook's
+settings, or the command. To make it automatic, set **Sync when Obsidian starts** in
+**Settings → PassBook → Sync** (for example "If older than 6 hours"). Each sync picks up
+what's new. Some banks don't report pending
 charges through SimpleFIN, so today's spending may take a day or two to appear, once it
 posts. SimpleFIN updates about once a
 day, and PassBook makes at most 20 requests a day so your access never gets cut off.

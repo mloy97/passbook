@@ -9,7 +9,8 @@ device.
 ## What it does
 
 - **Syncs your accounts** through [SimpleFIN Bridge](https://bridge.simplefin.org/): link
-  your banks there once, paste one setup token into PassBook, and run **Sync now**.
+  your banks there once, paste one setup token into PassBook, then sync from the ribbon
+  icon, the command palette or settings, or automatically when Obsidian starts.
 - **Keeps your history correct:** charges that post late are picked up, and pending
   charges are replaced when they post, never duplicated.
 - **Stores plain files in your vault:** JSON by default, with optional CSV copies for

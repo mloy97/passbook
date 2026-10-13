@@ -7,6 +7,15 @@ contract, so breaking either means a major version.
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-10-12
+
+### Added
+
+- Sync from a ribbon icon (its tooltip says when you last synced) or a **Sync now** button
+  in settings.
+- **Sync when Obsidian starts**: off by default; syncs on open if the last sync is older
+  than 1, 6, 12 or 24 hours, on the device that syncs.
+
 ## [0.1.0] - 2026-10-10
 
 First release.
